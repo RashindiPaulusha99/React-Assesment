@@ -63,9 +63,6 @@ class UserRegister extends Component{
                            <GDSEButton variant="contained" label="Save"/>
                        </div>
                     </Grid>
-                    <Grid item lg={12} md={12} sm={12} xm={12}>
-
-                    </Grid>
                 </Grid>
             </Fragment>
         )

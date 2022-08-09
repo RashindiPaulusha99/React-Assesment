@@ -6,11 +6,8 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Autocomplete from '@mui/material/Autocomplete';
 import GDSEButton from "../../../components/Home/Common/Button";
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button'
-import Stack from '@mui/material/Stack';
 import profile from "../../../assets/images/blank-profile-picture-973460_640.png";
-import Masonry from '@mui/lab/Masonry';
 
 class Product extends Component{
     constructor(props) {
