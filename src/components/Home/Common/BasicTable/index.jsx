@@ -21,15 +21,9 @@ class BasicPostTable extends Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {/*
-                         map() is JS Loop function. it can be used alternatives to the for-each loop
-                        reffer this: 'https://ordinarycoders.com/blog/article/javascript-react-map-method'
-                        */}
                         {this.props.data.map((row) => (
                             <TableRow
-                                key={row.id}
-                                // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
+                                key={row.id}>
                                 <TableCell component="th" scope="row">
                                     {row.id}
                                 </TableCell>
