@@ -79,9 +79,10 @@ class Login extends Component{
                     </div>
                     <div className={classes.create_account_container}>
                         <Typography variant="h7">Create new user account ?
-                            <Button>Click here</Button>
+                            <Link to="/register">
+                                <Button>Click here</Button>
+                            </Link>
                         </Typography>
-
                     </div>
                 </div>
                 <GDSESnackBar
