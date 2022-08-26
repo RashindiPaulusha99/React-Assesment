@@ -8,16 +8,15 @@ import { withStyles } from "@mui/styles";
 import Button from '@mui/material/Button';
 import {Link} from "react-router-dom";
 import App from "../../../app/App";
+import postService from "../../../Services/postService";
 
 class Login extends Component{
     constructor(props) {
         super(props);
         this.state={
-            username:"admin",
-            password:"admin",
             formData:{
-                user_name:'',
-                pw:''
+                username:'',
+                password:''
             },
             open:false,
             message:'',
@@ -25,11 +24,14 @@ class Login extends Component{
         }
     }
 
-    checkValide(){
-        console.log("username :"+this.state.username);
+    async checkValide(){
+        /*console.log("username :"+this.state.username);
         console.log("password :"+this.state.password);
-        console.log(this.state.formData);
-        if (this.state.formData.user_name===this.state.username && this.state.formData.pw===this.state.password){
+        console.log(this.state.formData);*/
+        let res = await postService.fetchPost();
+        console.log(res.data)
+        console.log(JSON.stringify(res.data))
+        if (res.data.username===this.state.formData.username && res.data.password===this.state.formData.password){
             console.log("match");
             this.setState({
                 open:true,
@@ -58,14 +60,14 @@ class Login extends Component{
                         <TextField className={classes.outlined_basic} id="outlined-basic" label="username"  variant="outlined"
                         onChange={(e)=>{
                             let formdata=this.state.formData
-                            formdata.user_name=e.target.value
+                            formdata.username=e.target.value
                             this.setState({formdata})
                         }}
                         />
                         <TextField className={classes.outlined_basic} id="outlined-basic" label="Password" type="password" autoComplete="current-password" variant="outlined"
                                    onChange={(e)=>{
                                        let  formdata=this.state.formData
-                                       formdata.pw=e.target.value
+                                       formdata.password=e.target.value
                                        this.setState({formdata})
                                    }}
                         />
