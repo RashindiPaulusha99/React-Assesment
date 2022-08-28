@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { styleSheet } from './style';
 import Grid from '@mui/material/Grid';
 import GDSEButton from "../../../components/Home/Common/Button";
@@ -32,21 +32,21 @@ class DashBoard extends Component {
                 </div>
                 <div className={classes.form__container}>
                     <div className={classes.left__form}>
-                        <div style={{width:'40%',height:'50%',backgroundColor:'gray'}}>
-                            <Typography variant="h2"  style={{textAlign:'center'}}>Products</Typography>
+                        <div style={{width:'50%',height:'50%',backgroundColor:'gray'}}>
+                            <Typography variant="h3"  style={{textAlign:'center'}}>Products</Typography>
                             <Typography variant="h2"  style={{textAlign:'center'}}>100</Typography>
                         </div>
                     </div>
                     <div className={classes.right__form}>
-                        <div style={{width:'40%',height:'50%',backgroundColor:'gray'}}>
-                            <Typography variant="h2" style={{textAlign:'center'}}>Cart</Typography>
+                        <div style={{width:'50%',height:'50%',backgroundColor:'gray'}}>
+                            <Typography variant="h3" style={{textAlign:'center'}}>Cart</Typography>
                             <Typography variant="h2"  style={{textAlign:'center'}}>43</Typography>
                         </div>
                     </div>
                 </div>
                 <div className={classes.form__container1}>
-                    <div style={{width:'20%',height:'50%',backgroundColor:'gray'}}>
-                        <Typography variant="h2"  style={{textAlign:'center'}}>Users</Typography>
+                    <div style={{width:'25%',height:'50%',backgroundColor:'gray'}}>
+                        <Typography variant="h3"  style={{textAlign:'center'}}>Users</Typography>
                         <Typography variant="h2"  style={{textAlign:'center'}}>100</Typography>
                     </div>
                 </div>

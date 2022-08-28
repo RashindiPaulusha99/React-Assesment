@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import GDSEButton from "../../../components/Home/Common/Button";
 import Autocomplete from "@mui/material/Autocomplete";
+import {TextValidator, ValidatorForm} from "react-material-ui-form-validator";
 
 class Cart extends Component{
     constructor(props) {
@@ -20,15 +21,27 @@ class Cart extends Component{
                 {label: '12 Angry Men', year: 1957},
                 {label: "Schindler's List", year: 1993},
                 {label: 'Pulp Fiction', year: 1994}
-            ]
+            ],
+            formData:{
+                name:'',
+                date:'',
+                title:'',
+                qty:''
+            }
         }
     }
+
+    getCartDetails=(e) =>{
+        let formData = this.state.formData
+        console.log(formData)
+    };
 
     render() {
         const {classes} =this.props;
         return(
             <Fragment>
-                <Grid container spacing="12">
+                <ValidatorForm ref="form" className="pt-2" onSubmit={this.getCartDetails}>
+                    <Grid container spacing="12">
                     <Grid item lg={12} md={12} sm={12} xm={12} style={{paddingLeft:'5%',paddingTop:'2%',paddingBottom:'1%'}}>
                         <Typography variant="h3">Cart Manage</Typography>
                     </Grid>
@@ -44,13 +57,24 @@ class Cart extends Component{
                             }
                             onChange={(e,value) =>{
                                 console.log(value.label+" "+value.year);
+                                let data=this.state.formData
+                                data.name=value.label
+                                this.setState(data);
                             }}
                             size="small"
                             style={{width:'90%'}}
                         />
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xm={6}>
-                        <TextField id="outlined-basic" type='date' variant="outlined" size="small" style={{width:'90%'}}/>
+                        <TextValidator id="outlined-basic" type='date' variant="outlined" size="small" style={{width:'90%'}}
+                                       validators={['required','isString']}
+                                       value={this.state.formData.date}
+                                       onChange={(e)=>{
+                                           let data=this.state.formData
+                                           data.date=e.target.value
+                                           this.setState(data);
+                                       }}
+                        />
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xm={6} style={{paddingLeft:'5%'}}>
                         <Autocomplete
@@ -64,23 +88,35 @@ class Cart extends Component{
                             }
                             onChange={(e,value) =>{
                                 console.log(value.label+" "+value.year);
+                                let data=this.state.formData
+                                data.title=value.label
+                                this.setState(data);
                             }}
                             size="small"
                             style={{width:'90%'}}
                         />
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xm={6}>
-                        <TextField id="outlined-basic" type='number' label="Qty" variant="outlined" size="small" style={{width:'90%'}}/>
+                        <TextValidator id="outlined-basic" label="Qty" type='number' variant="outlined" size="small" style={{width:'90%'}}
+                                       validators={['required','isPositive']}
+                                       value={this.state.formData.qty}
+                                       onChange={(e)=>{
+                                           let data=this.state.formData
+                                           data.qty=e.target.value
+                                           this.setState(data);
+                                       }}
+                        />
                     </Grid>
                     <Grid item lg={12} md={12} sm={12} xm={12} style={{display:'flex',justifyContent:'flex-end',paddingRight:'5%'}}>
                         <div style={{paddingRight:'1%'}}>
                             <GDSEButton variant="contained" label="Clear" color='error'/>
                         </div>
                         <div>
-                            <GDSEButton variant="contained" label="Save"/>
+                            <GDSEButton variant="contained" label="Save" type="submit"/>
                         </div>
                     </Grid>
                 </Grid>
+                </ValidatorForm>
             </Fragment>
         )
     }

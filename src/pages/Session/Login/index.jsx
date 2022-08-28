@@ -28,21 +28,37 @@ class Login extends Component{
         /*console.log("username :"+this.state.username);
         console.log("password :"+this.state.password);
         console.log(this.state.formData);*/
-        let res = await postService.fetchPost();
-        console.log(res.data)
-        console.log(JSON.stringify(res.data))
-        if (res.data.username===this.state.formData.username && res.data.password===this.state.formData.password){
-            console.log("match");
+
+        let formData = this.state.formData
+        let response = await  postService.createPost(formData);
+        if (response.status === 201){
             this.setState({
                 open:true,
-                message:"User credential matching",
+                message:'Post created successfully',
                 severity:'success'
             })
+            /*let res = await postService.fetchPost();
+            console.log(res.data)
+            console.log(JSON.stringify(res.data))
+            if (res.data.username===this.state.formData.username && res.data.password===this.state.formData.password){
+                console.log("match");
+                this.setState({
+                    open:true,
+                    message:"User credential matching",
+                    severity:'success'
+                })
 
+            }else {
+                this.setState({
+                    open:true,
+                    message:"Check username and password",
+                    severity:'error'
+                })
+            }*/
         }else {
             this.setState({
                 open:true,
-                message:"Check username and password",
+                message:'Post created unsuccessfully',
                 severity:'error'
             })
         }
@@ -59,16 +75,16 @@ class Login extends Component{
                     <div className={classes.form_container}>
                         <TextField className={classes.outlined_basic} id="outlined-basic" label="username"  variant="outlined"
                         onChange={(e)=>{
-                            let formdata=this.state.formData
-                            formdata.username=e.target.value
-                            this.setState({formdata})
+                            let data=this.state.formData
+                            data.username=e.target.value
+                            this.setState({data})
                         }}
                         />
                         <TextField className={classes.outlined_basic} id="outlined-basic" label="Password" type="password" autoComplete="current-password" variant="outlined"
                                    onChange={(e)=>{
-                                       let  formdata=this.state.formData
-                                       formdata.password=e.target.value
-                                       this.setState({formdata})
+                                       let  data=this.state.formData
+                                       data.password=e.target.value
+                                       this.setState({data})
                                    }}
                         />
                     </div>
