@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { styleSheet } from './style';
 import Grid from '@mui/material/Grid';
 import GDSEButton from "../../../components/Home/Common/Button";
+import {Link} from "react-router-dom";
 
 class DashBoard extends Component {
     constructor(props) {
@@ -21,10 +22,10 @@ class DashBoard extends Component {
                         </Grid>
                         <Grid item lg={4} md={4} sm={4} xm={4} style={{paddingTop: '1%'}}>
                             <div style={{display:'flex',justifyContent:'space-around'}}>
-                                <Link to="product">
+                                <Link to="/product">
                                     <GDSEButton variant="contained" label="Product" color="success"/>
                                 </Link>
-                                <Link to="cart">
+                                <Link to="/cart">
                                     <GDSEButton variant="contained" label="Cart" color="secondary"/>
                                 </Link>
                             </div>
