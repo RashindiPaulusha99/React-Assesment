@@ -21,8 +21,12 @@ class DashBoard extends Component {
                         </Grid>
                         <Grid item lg={4} md={4} sm={4} xm={4} style={{paddingTop: '1%'}}>
                             <div style={{display:'flex',justifyContent:'space-around'}}>
-                                <GDSEButton variant="contained" label="Product" color="success"/>
-                                <GDSEButton variant="contained" label="Cart" color="secondary"/>
+                                <Link to="product">
+                                    <GDSEButton variant="contained" label="Product" color="success"/>
+                                </Link>
+                                <Link to="cart">
+                                    <GDSEButton variant="contained" label="Cart" color="secondary"/>
+                                </Link>
                             </div>
                         </Grid>
                         <Grid item lg={4} md={4} sm={4} xm={4} style={{display:'flex',justifyContent:'flex-end',paddingRight: '3%',paddingTop: '1%',color:'white'}} >
