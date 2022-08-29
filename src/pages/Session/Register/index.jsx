@@ -7,6 +7,7 @@ import GDSEButton from "../../../components/Home/Common/Button";
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import registerService from "../../../Services/registerService";
 import GDSESnackBar from "../../../components/Home/Common/SnakBar";
+import GDSEDataTable from "../../../components/Home/Common/Table";
 
 class UserRegister extends Component {
 
@@ -39,7 +40,68 @@ class UserRegister extends Component {
             message:'',
             severity:'',
 
-            data:[]
+            data:[],
+
+            loaded: false,
+
+            columns: [
+                {
+                    field: 'id',
+                    headerName: 'User Id',
+                    width: 70
+                },
+                {
+                    field: 'firstName',
+                    headerName: 'First Name',
+                    width: 130
+                },
+                {
+                    field: 'lastName',
+                    headerName: 'Last Name',
+                    width: 130
+                },
+                {
+                    field: 'email',
+                    headerName: 'Email',
+                    width: 130
+                },
+                {
+                    field: 'phone',
+                    headerName: 'Phone Number',
+                    width: 130
+                },
+                {
+                    field: 'city',
+                    headerName: 'City',
+                    width: 130
+                },
+                {
+                    field: 'street',
+                    headerName: 'Street',
+                    width: 130
+                },
+                {
+                    field: 'number',
+                    headerName: 'Street NO',
+                    width: 130
+                },
+                {
+                    field: 'zipCode',
+                    headerName: 'Zip Code',
+                    width: 130
+                },
+                {
+                    field: 'latValue',
+                    headerName: 'Lat Value',
+                    width: 130
+                },
+                {
+                    field: 'longValue',
+                    headerName: 'Long Value',
+                    width: 130
+                }
+            ]
+
         }
     }
 
@@ -274,6 +336,15 @@ class UserRegister extends Component {
                         </Grid>
                     </Grid>
                 </ValidatorForm>
+                <Grid container style={{ height: 400, width: '100%', marginTop: '50px' }}>
+                    <GDSEDataTable
+                        columns={this.state.columns}
+                        rows={this.state.data}
+                        rowsPerPageOptions={5}
+                        pageSize={5}
+                        checkboxSelection={true}
+                    />
+                </Grid>
                 <GDSESnackBar
                     open={this.state.open}
                     onClose={() => {
