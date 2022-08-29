@@ -154,6 +154,23 @@ class UserRegister extends Component {
         let promise = await registerService.fetchUser();
         if(promise.status === 200){
             this.setState({
+                loaded:true,
+                email:"",
+                username:"",
+                password:"",
+                firstName:"",
+                lastName:""
+                address:{
+                    city:"",
+                    street:"",
+                    number:"",
+                    zipCode:"",
+                    geolocation:{
+                        latValue:"",
+                        longValue:""
+                    }
+                },
+                phone:"",
                 data:promise.data
             })
         }
@@ -338,6 +355,7 @@ class UserRegister extends Component {
                 </ValidatorForm>
                 <Grid container style={{ height: 400, width: '100%', marginTop: '50px' }}>
                     <GDSEDataTable
+                        stickyHeader aria-label="sticky table"
                         columns={this.state.columns}
                         rows={this.state.data}
                         rowsPerPageOptions={5}
