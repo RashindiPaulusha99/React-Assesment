@@ -5,7 +5,8 @@ import Grid from '@mui/material/Grid';
 import Typography from "@mui/material/Typography";
 import GDSEButton from "../../../components/Home/Common/Button";
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
-
+import registerService from "../../../Services/registerService";
+import GDSESnackBar from "../../../components/Home/Common/SnakBar";
 
 class UserRegister extends Component {
 
@@ -14,22 +15,54 @@ class UserRegister extends Component {
 
         this.state = {
             formData:{
-                firstName:"",
-                lastName:"",
                 email:"",
                 username:"",
                 password:"",
-                city:"",
-                street:"",
-                streetNo:"",
-                zipCode:"",
-                latValue:"",
-                longValue:"",
-                mobileNo:""
-            }
+                name:{
+                    firstName:"",
+                    lastName:""
+                },
+                address:{
+                    city:"",
+                    street:"",
+                    number:"",
+                    zipCode:"",
+                    geolocation:{
+                        latValue:"",
+                        longValue:""
+                    }
+                },
+                phone:"",
+
+            },
+
+            open:false,
+            message:'',
+            severity:''
         }
 
     }
+
+    submitUser= async (e) =>{
+        let formData = this.state.formData
+
+        let res = await registerService.registerPost(formData);
+        if(res.status === 200){
+            this.setState({
+                open:true,
+                message:'User Saved!',
+                severity:'success'
+            });
+            this.clearFields();
+        }else {
+            this.setState({
+                open:true,
+                message:'User Saved Unsuccessful!',
+                severity:'error'
+            });
+        }
+    };
+
 
     render() {
 
@@ -37,7 +70,7 @@ class UserRegister extends Component {
             <Fragment>
                 <ValidatorForm
                     ref="form"
-                    onSubmit={this.handleSubmit}
+                    onSubmit={this.submitUser}
                     onError={errors => console.log(errors)}
                 >
                     <Grid container spacing="12">
@@ -49,10 +82,10 @@ class UserRegister extends Component {
                             <TextValidator id="outlined-basic" label="First Name" variant="outlined" size="small"
                                        style={{width: '90%'}}
                                            validators={['required','isString']}
-                                           value={this.state.formData.firstName}
+                                           value={this.state.formData.name.firstName}
                                            onChange={(e)=>{
                                                let data=this.state.formData
-                                               data.firstName=e.target.value
+                                               data.name.firstName=e.target.value
                                                this.setState(data);
                                            }}
                             />
@@ -61,10 +94,10 @@ class UserRegister extends Component {
                             <TextValidator id="outlined-basic" label="Last Name" variant="outlined" size="small"
                                        style={{width: '90%'}}
                                            validators={['required','isString']}
-                                           value={this.state.formData.lastName}
+                                           value={this.state.formData.name.lastName}
                                            onChange={(e)=>{
                                                let data=this.state.formData
-                                               data.lastName=e.target.value
+                                               data.name.lastName=e.target.value
                                                this.setState(data);
                                            }}
                             />
@@ -94,9 +127,9 @@ class UserRegister extends Component {
                             />
                         </Grid>
                         <Grid item lg={6} md={6} sm={6} xm={6} style={{paddingLeft: '5%'}}>
-                            <TextValidator id="outlined-basic" label="Password" variant="outlined" size="small"
+                            <TextValidator id="outlined-basic" type="password" label="Password" variant="outlined" size="small"
                                        style={{width: '90%'}}
-                                           validators={['required','isPositive']}
+                                           validators={['required','isString']}
                                            value={this.state.formData.password}
                                            onChange={(e)=>{
                                                let data=this.state.formData
@@ -109,10 +142,10 @@ class UserRegister extends Component {
                             <TextValidator id="outlined-basic" label="City" variant="outlined" size="small"
                                        style={{width: '90%'}}
                                            validators={['required','isString']}
-                                           value={this.state.formData.city}
+                                           value={this.state.formData.address.city}
                                            onChange={(e)=>{
                                                let data=this.state.formData
-                                               data.city=e.target.value
+                                               data.address.city=e.target.value
                                                this.setState(data);
                                            }}
                             />
@@ -121,10 +154,10 @@ class UserRegister extends Component {
                             <TextValidator id="outlined-basic" label="Street" variant="outlined" size="small"
                                        style={{width: '90%'}}
                                            validators={['required','isString']}
-                                           value={this.state.formData.street}
+                                           value={this.state.formData.address.street}
                                            onChange={(e)=>{
                                                let data=this.state.formData
-                                               data.street=e.target.value
+                                               data.address.street=e.target.value
                                                this.setState(data);
                                            }}
                             />
@@ -133,10 +166,10 @@ class UserRegister extends Component {
                             <TextValidator id="outlined-basic" label="Street NO" variant="outlined" size="small"
                                        style={{width: '90%'}}
                                            validators={['required','isPositive']}
-                                           value={this.state.formData.streetNo}
+                                           value={this.state.formData.address.number}
                                            onChange={(e)=>{
                                                let data=this.state.formData
-                                               data.streetNo=e.target.value
+                                               data.address.number=e.target.value
                                                this.setState(data);
                                            }}
                             />
@@ -145,10 +178,10 @@ class UserRegister extends Component {
                             <TextValidator id="outlined-basic" label="Zip Code" variant="outlined" size="small"
                                        style={{width: '90%'}}
                                            validators={['required','isPositive']}
-                                           value={this.state.formData.zipCode}
+                                           value={this.state.formData.address.zipCode}
                                            onChange={(e)=>{
                                                let data=this.state.formData
-                                               data.zipCode=e.target.value
+                                               data.address.zipCode=e.target.value
                                                this.setState(data);
                                            }}
                             />
@@ -157,10 +190,10 @@ class UserRegister extends Component {
                             <TextValidator id="outlined-basic" label="Lat Value" variant="outlined" size="small"
                                        style={{width: '90%'}}
                                            validators={['required','isPositive']}
-                                           value={this.state.formData.latValue}
+                                           value={this.state.formData.address.geolocation.latValue}
                                            onChange={(e)=>{
                                                let data=this.state.formData
-                                               data.latValue=e.target.value
+                                               data.address.geolocation.latValue=e.target.value
                                                this.setState(data);
                                            }}
                             />
@@ -169,10 +202,10 @@ class UserRegister extends Component {
                             <TextValidator id="outlined-basic" label="Long Value" variant="outlined" size="small"
                                        style={{width: '90%'}}
                                            validators={['required','isPositive']}
-                                           value={this.state.formData.longValue}
+                                           value={this.state.formData.address.geolocation.longValue}
                                            onChange={(e)=>{
                                                let data=this.state.formData
-                                               data.longValue=e.target.value
+                                               data.address.geolocation.longValue=e.target.value
                                                this.setState(data);
                                            }}
                             />
@@ -181,10 +214,10 @@ class UserRegister extends Component {
                             <TextValidator id="outlined-basic" label="Mobile NO" variant="outlined" size="small"
                                        style={{width: '90%'}}
                                            validators={['required','isPositive']}
-                                           value={this.state.formData.mobileNo}
+                                           value={this.state.formData.phone}
                                            onChange={(e)=>{
                                                let data=this.state.formData
-                                               data.mobileNo=e.target.value
+                                               data.phone=e.target.value
                                                this.setState(data);
                                            }}
                             />
@@ -203,6 +236,16 @@ class UserRegister extends Component {
                         </Grid>
                     </Grid>
                 </ValidatorForm>
+                <GDSESnackBar
+                    open={this.state.open}
+                    onClose={() => {
+                        this.setState({ open: false })
+                    }}
+                    message={this.state.message}
+                    autoHideDuration={3000}
+                    severity={this.state.severity}
+                    variant="filled"
+                />
             </Fragment>
         )
     }
