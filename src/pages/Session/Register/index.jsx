@@ -155,22 +155,6 @@ class UserRegister extends Component {
         if(promise.status === 200){
             this.setState({
                 loaded:true,
-                email:"",
-                username:"",
-                password:"",
-                firstName:"",
-                lastName:""
-                address:{
-                    city:"",
-                    street:"",
-                    number:"",
-                    zipCode:"",
-                    geolocation:{
-                        latValue:"",
-                        longValue:""
-                    }
-                },
-                phone:"",
                 data:promise.data
             })
         }
