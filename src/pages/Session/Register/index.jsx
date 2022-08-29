@@ -33,14 +33,37 @@ class UserRegister extends Component {
                     }
                 },
                 phone:"",
-
             },
 
             open:false,
             message:'',
             severity:''
         }
+    }
 
+    clearFields = ()=>{
+        this.setState({
+            formData:{
+                email:"",
+                username:"",
+                password:"",
+                name:{
+                    firstName:"",
+                    lastName:""
+                },
+                address:{
+                    city:"",
+                    street:"",
+                    number:"",
+                    zipCode:"",
+                    geolocation:{
+                        latValue:"",
+                        longValue:""
+                    }
+                },
+                phone:""
+            }
+        })
     }
 
     submitUser= async (e) =>{
@@ -225,10 +248,10 @@ class UserRegister extends Component {
                         <Grid item lg={12} md={12} sm={12} xm={12}
                               style={{display: 'flex', justifyContent: 'flex-end', paddingRight: '5%'}}>
                             <div style={{paddingRight: '1%'}}>
-                                <GDSEButton variant="contained" label="Clear" color='error'/>
+                                <GDSEButton variant="contained" label="Clear" color='error' onClick={this.clearFields}/>
                             </div>
                             <div>
-                                <GDSEButton variant="contained" label="Save" type="submit"/>
+                                <GDSEButton variant="contained" label="Save" type="submit" />
                             </div>
                         </Grid>
                         <Grid item lg={12} md={12} sm={12} xm={12}>
