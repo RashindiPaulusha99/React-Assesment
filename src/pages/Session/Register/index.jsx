@@ -37,7 +37,9 @@ class UserRegister extends Component {
 
             open:false,
             message:'',
-            severity:''
+            severity:'',
+
+            data:[]
         }
     }
 
@@ -86,6 +88,19 @@ class UserRegister extends Component {
         }
     };
 
+    loadData =async (e)=>{
+        let promise = await registerService.fetchUser();
+        if(promise.status === 200){
+            this.setState({
+                data:promise.data
+            })
+        }
+        console.log(this.state.data)
+    }
+
+    componentDidMount() {
+        this.loadData();
+    }
 
     render() {
 

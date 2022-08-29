@@ -16,17 +16,15 @@ class RegisterService {
     }
 
 
-    fetchPost = async () =>{
+    fetchUser = async () =>{
         const promise = new Promise((resolve, reject) =>{
             axios.get('users')
                 .then((res) =>{
-                    console.log(resolve(res))
                     return resolve(res)
                 }).catch((error) =>{
-                return resolve(error)
+                    return resolve(error)
             })
         })
-        console.log(promise)
         return await promise
     }
 }
