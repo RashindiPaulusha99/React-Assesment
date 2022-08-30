@@ -7,21 +7,18 @@ import TextField from "@mui/material/TextField";
 import GDSEButton from "../../../components/Home/Common/Button";
 import Autocomplete from "@mui/material/Autocomplete";
 import {TextValidator, ValidatorForm} from "react-material-ui-form-validator";
+import productService from "../../../Services/productService";
+import registerService from "../../../Services/registerService";
 
 class Cart extends Component{
     constructor(props) {
         super(props);
 
         this.state = {
-            top100Films: [
-                {label: 'The Shawshank Redemption', year: 1994},
-                {label: 'The Godfather', year: 1972},
-                {label: 'The Godfather: Part II', year: 1974},
-                {label: 'The Dark Knight', year: 2008},
-                {label: '12 Angry Men', year: 1957},
-                {label: "Schindler's List", year: 1993},
-                {label: 'Pulp Fiction', year: 1994}
-            ],
+            userNames: [],
+
+            productTitles: [],
+
             formData:{
                 name:'',
                 date:'',
@@ -31,7 +28,31 @@ class Cart extends Component{
         }
     }
 
-    getCartDetails=(e) =>{
+    loadUsernames = async (e)=>{
+        let promise = await registerService.fetchUser();
+        if(promise.status === 200){
+            this.setState({
+                userNames:promise.data.username
+            })
+            console.log(promise.data.username)
+        }
+    }
+
+    loadTitles = async (e)=>{
+        let promise = await productService.fetchProduct();
+        if(promise.status === 200){
+            this.setState({
+                productTitles:promise.data.title
+            })
+        }
+    }
+
+    componentDidMount() {
+        this.loadUsernames();
+        this.loadTitles();
+    }
+
+    submitCartDetails=(e) =>{
         let formData = this.state.formData
         console.log(formData)
     };
@@ -40,7 +61,7 @@ class Cart extends Component{
         const {classes} =this.props;
         return(
             <Fragment>
-                <ValidatorForm ref="form" className="pt-2" onSubmit={this.getCartDetails}>
+                <ValidatorForm ref="form" className="pt-2" onSubmit={this.submitCartDetails}>
                     <Grid container spacing="12">
                     <Grid item lg={12} md={12} sm={12} xm={12} style={{paddingLeft:'5%',paddingTop:'2%',paddingBottom:'1%'}}>
                         <Typography variant="h3">Cart Manage</Typography>
@@ -49,14 +70,13 @@ class Cart extends Component{
                         <Autocomplete
                             disablePortal
                             id="combo-box-demo"
-                            options={this.state.top100Films}
+                            options={this.state.userNames}
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="User Names" />}
                             getOptionLable={
                                 (option) => option.label
                             }
                             onChange={(e,value) =>{
-                                console.log(value.label+" "+value.year);
                                 let data=this.state.formData
                                 data.name=value.label
                                 this.setState(data);
@@ -80,14 +100,13 @@ class Cart extends Component{
                         <Autocomplete
                             disablePortal
                             id="combo-box-demo"
-                            options={this.state.top100Films}
+                            options={this.state.productTitles}
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="Product Title" />}
                             getOptionLable={
                                 (option) => option.label
                             }
                             onChange={(e,value) =>{
-                                console.log(value.label+" "+value.year);
                                 let data=this.state.formData
                                 data.title=value.label
                                 this.setState(data);
