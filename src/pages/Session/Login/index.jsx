@@ -12,6 +12,7 @@ import loginService from "../../../Services/loginService";
 import registerService from "../../../Services/registerService";
 import {TextValidator, ValidatorForm} from "react-material-ui-form-validator";
 import Grid from "@mui/material/Grid";
+import { useNavigate } from 'react-router-dom';
 
 class Login extends Component{
     constructor(props) {
@@ -23,14 +24,13 @@ class Login extends Component{
             },
             open:false,
             message:'',
-            severity:''
+            severity:'',
+
+            check:''
         }
     }
 
     async checkValide(){
-        /*console.log("username :"+this.state.username);
-        console.log("password :"+this.state.password);
-        console.log(this.state.formData);*/
 
         let formData = this.state.formData
         let response = await  loginService.loginPost(formData);
@@ -46,6 +46,17 @@ class Login extends Component{
                             message:"User credential matching",
                             severity:'success'
                         })
+                        this.setState({
+                            formData:{
+                                username:'',
+                                password:''
+                            }
+                        })
+                        this.setState({
+                            check:'checked'
+                        })
+                        //const navigate = useNavigate();
+                        //useNavigate('/dash');
                         break;
                     }
                 }
@@ -57,6 +68,8 @@ class Login extends Component{
                 severity:'error'
             })
         }
+
+        return this.state.check;
     }
 
     render() {
@@ -64,41 +77,6 @@ class Login extends Component{
         return(
             <Fragment>
                 <ValidatorForm ref="form">
-                    {/*<Grid container spacing="12">
-                        <Grid item lg={12} md={12} sm={12} xm={12}
-                              style={{paddingLeft: '5%', paddingTop: '2%', paddingBottom: '1%'}}>
-                            <Typography variant="h3">Login</Typography>
-                        </Grid>
-                        <Grid item lg={12} md={12} sm={12} xm={12} style={{paddingLeft: '5%'}}>
-                            <TextValidator id="outlined-basic" label="Username" variant="outlined" size="small"
-                                           style={{width: '90%'}}
-                                           validators={['required','isString']}
-                                           value={this.state.formData.username}
-                                           onChange={(e)=>{
-                                               let data=this.state.formData
-                                               data.username=e.target.value
-                                               this.setState({data})
-                                           }}
-                            />
-                        </Grid>
-                        <Grid item lg={12} md={12} sm={12} xm={12} style={{paddingLeft: '5%'}}>
-                            <TextValidator id="outlined-basic" label="Password" variant="outlined" size="small"
-                                           style={{width: '90%'}}
-                                           validators={['required','isString']}
-                                           value={this.state.formData.password}
-                                           onChange={(e)=>{
-                                               let  data=this.state.formData
-                                               data.password=e.target.value
-                                               this.setState({data})
-                                           }}
-                            />
-                        </Grid>
-                        <Grid item lg={12} md={12} sm={12} xm={12}
-                              style={{display: 'flex', justifyContent: 'center', paddingRight: '5%'}}>
-                            <div>
-                                <GDSEButton variant="contained" label="Login" type="submit" />
-                            </div>
-                        </Grid>*/}
 
                     <div className={classes.container}>
                     <div className={classes.login_cover}>
@@ -126,19 +104,17 @@ class Login extends Component{
                             />
                         </div>
                         <div className={classes.btn_container}>
-                            {/*<Link to="/dash">*/}
+                            <Link to="/dash"  >
                                 <GDSEButton variant="contained" label="login" className={classes.btn_login}
                                             onClick={()=>{
-                                                this.checkValide()
-                                                }}/>
-                           {/*</Link>*/}
+                                                this.checkValide();
+                                            }}/>
+                           </Link>
 
                         </div>
                         <div className={classes.create_account_container}>
                             <Typography variant="h7">Create new user account ?
-                                <Link to="/register">
-                                    <Button>Click here</Button>
-                                </Link>
+                                <Button href='/register'>Click here</Button>
                             </Typography>
                         </div>
                     </div>
