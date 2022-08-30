@@ -25,10 +25,9 @@ class Login extends Component{
             check:''
         }
     }
-
     PerformLogin = () => {
-        //console.log('sss')
-        this.props.navigate('/dash');
+        let navigate = useNavigate();
+        navigate.push('/dash');
     }
 
     async checkValide(){
@@ -150,9 +149,4 @@ class Login extends Component{
 
 }
 
-function WithNavigate(props) {
-    let navigate = useNavigate();
-    return navigate;
-}
-
-export default withStyles(styleSheet) (Login) (WithNavigate)
+export default withStyles(styleSheet) (Login)
