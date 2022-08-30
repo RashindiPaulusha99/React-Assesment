@@ -69,7 +69,7 @@ class Product extends Component{
         })
     }
 
-    loadCategory =async (e)=>{
+    loadCategory = async (e)=>{
         let promise = await productService.fetchCategory();
         if(promise.status === 200){
             this.setState({

@@ -1,18 +1,14 @@
 import React, {Component, Fragment} from "react";
 import { styleSheet } from "./style";
 import Typography from "@mui/material/Typography";
-import TextField from '@mui/material/TextField';
 import GDSEButton from "../../../components/Home/Common/Button";
 import GDSESnackBar from "../../../components/Home/Common/SnakBar";
 import { withStyles } from "@mui/styles";
 import Button from '@mui/material/Button';
-import {Link} from "react-router-dom";
-import App from "../../../app/App";
+import {Link, useNavigate} from "react-router-dom";
 import loginService from "../../../Services/loginService";
 import registerService from "../../../Services/registerService";
 import {TextValidator, ValidatorForm} from "react-material-ui-form-validator";
-import Grid from "@mui/material/Grid";
-import { useNavigate } from 'react-router-dom';
 
 class Login extends Component{
     constructor(props) {
@@ -28,6 +24,11 @@ class Login extends Component{
 
             check:''
         }
+    }
+
+    PerformLogin = () => {
+        //console.log('sss')
+        this.props.navigate('/dash');
     }
 
     async checkValide(){
@@ -46,18 +47,22 @@ class Login extends Component{
                             message:"User credential matching",
                             severity:'success'
                         })
+
                         this.setState({
+                            check:'checked'
+                        })
+
+                        /*this.setState({
                             formData:{
                                 username:'',
                                 password:''
                             }
-                        })
-                        this.setState({
-                            check:'checked'
-                        })
-                        //const navigate = useNavigate();
-                        //useNavigate('/dash');
+                        })*/
+
+                        this.PerformLogin();
+
                         break;
+
                     }
                 }
             }
@@ -67,9 +72,12 @@ class Login extends Component{
                 message:"User credential unmatching",
                 severity:'error'
             })
-        }
 
-        return this.state.check;
+            this.setState({
+                check:'unchecked'
+            })
+
+        }
     }
 
     render() {
@@ -104,13 +112,19 @@ class Login extends Component{
                             />
                         </div>
                         <div className={classes.btn_container}>
-                            <Link to="/dash"  >
-                                <GDSEButton variant="contained" label="login" className={classes.btn_login}
-                                            onClick={()=>{
+                            {/*<Link to='/dash'>
+                                <GDSEButton  variant="contained" label="login" className={classes.btn_login}
+                                            onClick={(e)=>{
                                                 this.checkValide();
-                                            }}/>
-                           </Link>
+                                                console.log(this.state.check)
 
+
+                                            }}/>
+                           </Link>*/}
+                            <GDSEButton  variant="contained" label="login" className={classes.btn_login}
+                                         onClick={(e)=>{
+                                            this.checkValide();
+                                         }}/>
                         </div>
                         <div className={classes.create_account_container}>
                             <Typography variant="h7">Create new user account ?
@@ -136,4 +150,9 @@ class Login extends Component{
 
 }
 
-export default withStyles(styleSheet) (Login)
+function WithNavigate(props) {
+    let navigate = useNavigate();
+    return navigate;
+}
+
+export default withStyles(styleSheet) (Login) (WithNavigate)
