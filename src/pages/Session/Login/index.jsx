@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import {Link} from "react-router-dom";
 import App from "../../../app/App";
 import loginService from "../../../Services/loginService";
+import registerService from "../../../Services/registerService";
 import {TextValidator, ValidatorForm} from "react-material-ui-form-validator";
 import Grid from "@mui/material/Grid";
 
@@ -34,37 +35,27 @@ class Login extends Component{
         let formData = this.state.formData
         let response = await  loginService.loginPost(formData);
         if (response.status === 200){
-            this.setState({
-                open:true,
-                message:'Post created successfully',
-                severity:'success'
-            })
-            /*let res = await postService.fetchPost();
-            console.log(res.data)
-            console.log(JSON.stringify(res.data))
-            if (res.data.username===this.state.formData.username && res.data.password===this.state.formData.password){
-                console.log("match");
-                this.setState({
-                    open:true,
-                    message:"User credential matching",
-                    severity:'success'
-                })
 
-            }else {
-                this.setState({
-                    open:true,
-                    message:"Check username and password",
-                    severity:'error'
-                })
-            }*/
-        }else {
+            let res = await registerService.fetchUser();
+
+            if(res.status === 200){
+                for (let i = 0; i <res.data.length ; i++) {
+                    if (res.data[i].username===this.state.formData.username && res.data[i].password===this.state.formData.password){
+                        this.setState({
+                            open:true,
+                            message:"User credential matching",
+                            severity:'success'
+                        })
+                        break;
+                    }
+                }
+            }
+        }else{
             this.setState({
                 open:true,
-                message:'Post created unsuccessfully',
+                message:"User credential unmatching",
                 severity:'error'
             })
-
-
         }
     }
 
@@ -72,7 +63,7 @@ class Login extends Component{
         const {classes} =this.props;
         return(
             <Fragment>
-                <ValidatorForm ref="form" onSubmit={this.checkValide()} onError={errors => console.log(errors)}>
+                <ValidatorForm ref="form">
                     {/*<Grid container spacing="12">
                         <Grid item lg={12} md={12} sm={12} xm={12}
                               style={{paddingLeft: '5%', paddingTop: '2%', paddingBottom: '1%'}}>
@@ -115,15 +106,7 @@ class Login extends Component{
                             <Typography variant="h3">Login</Typography>
                         </div>
                         <div className={classes.form_container}>
-                            {/*<TextField className={classes.outlined_basic} id="outlined-basic" label="Username"  variant="outlined"
-                            onChange={(e)=>{
-                                let data=this.state.formData
-                                data.username=e.target.value
-                                this.setState({data})
-                            }}
-                            />*/}
-                            <TextValidator id="outlined-basic" label="Username" variant="outlined" size="large"
-                                           style={{width: '100%'}}
+                            <TextValidator className={classes.outlined_basic} id="outlined-basic" label="Username" variant="outlined" size="large"
                                            validators={['required','isString']}
                                            value={this.state.formData.username}
                                            onChange={(e)=>{
@@ -132,20 +115,24 @@ class Login extends Component{
                                                this.setState({data})
                                            }}
                             />
-                            <TextField className={classes.outlined_basic} id="outlined-basic" label="Password" type="password" autoComplete="current-password" variant="outlined"
-                                       onChange={(e)=>{
-                                           let  data=this.state.formData
-                                           data.password=e.target.value
-                                           this.setState({data})
-                                       }}
+                            <TextValidator className={classes.outlined_basic} id="outlined-basic" label="Password" variant="outlined" size="large" type="password"
+                                           validators={['required','isString']}
+                                           value={this.state.formData.password}
+                                           onChange={(e)=>{
+                                               let  data=this.state.formData
+                                               data.password=e.target.value
+                                               this.setState({data})
+                                           }}
                             />
                         </div>
                         <div className={classes.btn_container}>
-                            <GDSEButton variant="contained" label="login" className={classes.btn_login}
-                            onClick={()=>{
-                                this.checkValide()
-                            }}
-                            />
+                            {/*<Link to="/dash">*/}
+                                <GDSEButton variant="contained" label="login" className={classes.btn_login}
+                                            onClick={()=>{
+                                                this.checkValide()
+                                                }}/>
+                           {/*</Link>*/}
+
                         </div>
                         <div className={classes.create_account_container}>
                             <Typography variant="h7">Create new user account ?
@@ -155,19 +142,18 @@ class Login extends Component{
                             </Typography>
                         </div>
                     </div>
-                    <GDSESnackBar
-                        open={this.state.open}
-                        onClose={() => {
-                            this.setState({ open: false })
-                        }}
-                        message={this.state.message}
-                        autoHideDuration={3000}
-                        severity={this.state.severity}
-                        variant="filled"
-                    />
                 </div>
-                    {/*</Grid>*/}
                 </ValidatorForm>
+                <GDSESnackBar
+                    open={this.state.open}
+                    onClose={() => {
+                        this.setState({ open: false })
+                    }}
+                    message={this.state.message}
+                    autoHideDuration={3000}
+                    severity={this.state.severity}
+                    variant="filled"
+                />
             </Fragment>
         )
     }

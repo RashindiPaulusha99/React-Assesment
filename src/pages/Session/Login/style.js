@@ -32,7 +32,7 @@ export const styleSheet = {
         justifyContent:'space-around'
     },
     outlined_basic:{
-        width:'80%'
+        width:'100%'
     },
     create_account_container:{
         height : '10%',
