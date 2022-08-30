@@ -1,11 +1,11 @@
 import axios from "../axios";
 
-class ProductService {
+class CartService {
 
-    productPost = async (data) =>{
+    cartPost = async (data) =>{
         console.log(data)
         const promise = new Promise((resolve, reject) =>{
-            axios.post('products',data)
+            axios.post('carts',data)
                 .then((res) =>{
                     return resolve(res)
                 }).catch((error) =>{
@@ -16,21 +16,9 @@ class ProductService {
     }
 
 
-    fetchCategory = async () =>{
+    fetchCart = async () =>{
         const promise = new Promise((resolve, reject) =>{
-            axios.get('products/categories')
-                .then((res) =>{
-                    return resolve(res)
-                }).catch((error) =>{
-                return resolve(error)
-            })
-        })
-        return await promise
-    }
-
-    fetchProduct = async () =>{
-        const promise = new Promise((resolve, reject) =>{
-            axios.get('products')
+            axios.get('carts')
                 .then((res) =>{
                     return resolve(res)
                 }).catch((error) =>{
@@ -41,4 +29,4 @@ class ProductService {
     }
 }
 
-export default new ProductService();
+export default new CartService();
