@@ -9,59 +9,103 @@ import Autocomplete from "@mui/material/Autocomplete";
 import {TextValidator, ValidatorForm} from "react-material-ui-form-validator";
 import productService from "../../../Services/productService";
 import registerService from "../../../Services/registerService";
+import cartService from "../../../Services/cartService";
 
 class Cart extends Component{
     constructor(props) {
         super(props);
 
         this.state = {
-            userNames: [],
-
-            productTitles: [],
-
             formData:{
-                name:'',
+                userId:'',
                 date:'',
-                title:'',
-                qty:''
-            }
+                products:[
+                    {
+                        productId: '',
+                        quantity: ''
+                    }
+                ]
+            },
+            userNames: [
+                'dgfg','fgfg','dggd'
+            ],
+
+            productTitles: ['dgfg','fgfg','dggd']
         }
     }
 
     loadUsernames = async (e)=>{
         let promise = await registerService.fetchUser();
         if(promise.status === 200){
-            this.setState({
-                userNames:promise.data.username
-            })
-            console.log(promise.data.username)
+            for (let i = 0; i < promise.data.length; i++) {
+                //console.log(promise.data[i].username)
+                this.setState({
+                    userNames:promise.data[i].username
+                })
+            }
+            //console.log(promise.data)
         }
     }
 
     loadTitles = async (e)=>{
         let promise = await productService.fetchProduct();
         if(promise.status === 200){
-            this.setState({
-                productTitles:promise.data.title
-            })
+            for (let i = 0; i < promise.data.length; i++) {
+                console.log(promise.data[1].title)
+                this.setState({
+                    productTitles:promise.data.title
+                })
+            }
+            //console.log(promise.data)
         }
+        console.log(this.state.productTitles)
     }
 
     componentDidMount() {
-        this.loadUsernames();
-        this.loadTitles();
+        //this.loadUsernames();
+        //this.loadTitles();
     }
 
-    submitCartDetails=(e) =>{
+    submitCartDetails=async (e) =>{
         let formData = this.state.formData
-        console.log(formData)
+
+        let res = await cartService.cartPost(formData);
+        if(res.status === 200){
+            this.setState({
+                open:true,
+                message:'Cart Added!',
+                severity:'success'
+            });
+            this.clearFields();
+        }else {
+            this.setState({
+                open:true,
+                message:'Cart Added Unsuccessful!',
+                severity:'error'
+            });
+        }
     };
+
+    clearFields = ()=>{
+        this.setState({
+            formData:{
+                userId:'',
+                date:'',
+                products:[
+                    {
+                        productId: '',
+                        quantity: ''
+                    }
+                ]
+            }
+        })
+    }
 
     render() {
         const {classes} =this.props;
         return(
             <Fragment>
-                <ValidatorForm ref="form" className="pt-2" onSubmit={this.submitCartDetails}>
+                <ValidatorForm ref="form"  onSubmit={this.submitCartDetails} onError={errors => console.log(errors)}>
                     <Grid container spacing="12">
                     <Grid item lg={12} md={12} sm={12} xm={12} style={{paddingLeft:'5%',paddingTop:'2%',paddingBottom:'1%'}}>
                         <Typography variant="h3">Cart Manage</Typography>
@@ -78,7 +122,7 @@ class Cart extends Component{
                             }
                             onChange={(e,value) =>{
                                 let data=this.state.formData
-                                data.name=value.label
+                                data.userId=e.target.value.label
                                 this.setState(data);
                             }}
                             size="small"
@@ -108,8 +152,8 @@ class Cart extends Component{
                             }
                             onChange={(e,value) =>{
                                 let data=this.state.formData
-                                data.title=value.label
-                                this.setState(data);
+                                data.products.productId=e.target.value.label
+                                this.setState(5);
                             }}
                             size="small"
                             style={{width:'90%'}}
@@ -118,17 +162,20 @@ class Cart extends Component{
                     <Grid item lg={6} md={6} sm={6} xm={6}>
                         <TextValidator id="outlined-basic" label="Qty" type='number' variant="outlined" size="small" style={{width:'90%'}}
                                        validators={['required','isPositive']}
-                                       value={this.state.formData.qty}
+                                       value={this.state.formData.products.quantity}
                                        onChange={(e)=>{
                                            let data=this.state.formData
-                                           data.qty=e.target.value
+                                           data.products.quantity=e.target.value
                                            this.setState(data);
                                        }}
                         />
                     </Grid>
                     <Grid item lg={12} md={12} sm={12} xm={12} style={{display:'flex',justifyContent:'flex-end',paddingRight:'5%'}}>
                         <div style={{paddingRight:'1%'}}>
-                            <GDSEButton variant="contained" label="Clear" color='error'/>
+                            <GDSEButton variant="contained" label="Clear" color='error'
+                                        onClick={()=>{
+                                            this.clearFields()
+                                        }}/>
                         </div>
                         <div>
                             <GDSEButton variant="contained" label="Save" type="submit"/>

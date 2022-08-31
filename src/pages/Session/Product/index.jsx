@@ -11,7 +11,6 @@ import profile from "../../../assets/images/blank-profile-picture-973460_640.png
 import {TextValidator, ValidatorForm} from "react-material-ui-form-validator";
 import GDSESnackBar from "../../../components/Home/Common/SnakBar";
 import productService from "../../../Services/productService";
-import registerService from "../../../Services/registerService";
 
 class Product extends Component{
     constructor(props) {
@@ -77,7 +76,6 @@ class Product extends Component{
                 categories:promise.data
             })
         }
-        console.log(this.state.categories)
     }
 
     componentDidMount() {

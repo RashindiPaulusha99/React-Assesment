@@ -3,7 +3,6 @@ import axios from "../axios";
 class RegisterService {
 
     registerPost = async (data) =>{
-        console.log(data)
         const promise = new Promise((resolve, reject) =>{
             axios.post('users',data)
                 .then((res) =>{
