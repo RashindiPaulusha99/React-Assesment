@@ -131,7 +131,7 @@ class Product extends Component{
                                 }
                                 onChange={(e,value) =>{
                                     let data=this.state.formData
-                                    data.category=e.target.value.label
+                                    data.category=e.target.value.children
                                     this.setState(data);
                                 }}
                                 size="small"

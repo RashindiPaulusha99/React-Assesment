@@ -10,6 +10,7 @@ import {TextValidator, ValidatorForm} from "react-material-ui-form-validator";
 import productService from "../../../Services/productService";
 import registerService from "../../../Services/registerService";
 import cartService from "../../../Services/cartService";
+import GDSESnackBar from "../../../components/Home/Common/SnakBar";
 
 class Cart extends Component{
     constructor(props) {
@@ -26,11 +27,20 @@ class Cart extends Component{
                     }
                 ]
             },
+
+            open:false,
+            message:'',
+            severity:'',
+
             userNames: [
-                'dgfg','fgfg','dggd'
+                { label: 'The Shawshank Redemption', year: 1994 },
+                { label: 'The Godfather', year: 1972 },
             ],
 
-            productTitles: ['dgfg','fgfg','dggd']
+            productTitles: [
+                { label: 'The Shawshank Redemption', year: 1994 },
+                { label: 'The Godfather', year: 1972 },
+            ]
         }
     }
 
@@ -118,11 +128,11 @@ class Cart extends Component{
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="User Names" />}
                             getOptionLable={
-                                (option) => option.label
+                                (option) => option.userNames
                             }
                             onChange={(e,value) =>{
                                 let data=this.state.formData
-                                data.userId=e.target.value.label
+                                data.userId=e.target.value.userNames
                                 this.setState(data);
                             }}
                             size="small"
@@ -148,11 +158,11 @@ class Cart extends Component{
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="Product Title" />}
                             getOptionLable={
-                                (option) => option.label
+                                (option) => option.productTitles
                             }
                             onChange={(e,value) =>{
                                 let data=this.state.formData
-                                data.products.productId=e.target.value.label
+                                data.products.productId=e.target.value.productTitles
                                 this.setState(5);
                             }}
                             size="small"
@@ -183,6 +193,16 @@ class Cart extends Component{
                     </Grid>
                 </Grid>
                 </ValidatorForm>
+                <GDSESnackBar
+                    open={this.state.open}
+                    onClose={() => {
+                        this.setState({ open: false })
+                    }}
+                    message={this.state.message}
+                    autoHideDuration={3000}
+                    severity={this.state.severity}
+                    variant="filled"
+                />
             </Fragment>
         )
     }
